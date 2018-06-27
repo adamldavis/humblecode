@@ -1,6 +1,17 @@
 # Compiled class file
 *.class
 
+# Secret properties
+application.properties
+
+# IDEA files
+.idea
+*.iml
+*.iws
+*.ipr
+out/
+build/
+
 # Log file
 *.log
 
