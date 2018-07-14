@@ -1,38 +1,34 @@
 package com.humblecode.humblecode.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Data
+@AllArgsConstructor
+@Document
 public class Course {
 
-    String name;
-    long price;
-    Test test;
+    @Id UUID id = UUID.randomUUID();
 
+    public UUID categoryId;
+    public String name;
+    public long price = 2000; // $20.00 is default price
+
+    public final List<Segment> segments = new ArrayList<>();
 
     public Course(String name) {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Test getTest() {
-        return test;
-    }
-
-    public void setTest(Test test) {
-        this.test = test;
-    }
-
-    public long getPrice() {
-        return price;
-    }
-
-    public void setPrice(long price) {
-        this.price = price;
+    public void setSegments(List<Segment> segments) {
+        this.segments.clear();
+        this.segments.addAll(segments);
     }
 
     @Override

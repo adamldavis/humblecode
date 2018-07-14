@@ -1,17 +1,23 @@
 package com.humblecode.humblecode.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@AllArgsConstructor
 public class Question {
 
-    //TODO
-    String text;
+    String text = "";
 
-    public String getText() {
-        return text;
-    }
+    String tip = "";
 
-    public void setText(String text) {
-        this.text = text;
-    }
+    String answer = "";
 
+    List<String> answers = new ArrayList<>();
+
+    List<Integer> correctAnswers = new ArrayList<>();
 
 }

@@ -25,17 +25,33 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	springCloudVersion = 'Finchley.RELEASE'
+}
 
 dependencies {
+	compile 'com.stripe:stripe-java:5.38.0'
+
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-freemarker')
+	compile('org.springframework.boot:spring-boot-starter-mail')
+	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-webflux')
-	runtime('org.springframework.boot:spring-boot-devtools')
-
-	compile 'com.stripe:stripe-java:5.38.0'
+	compile('org.springframework.cloud:spring-cloud-starter-oauth2')
+	compile 'org.springframework.security:spring-security-oauth2-client'
+	compile('org.springframework.session:spring-session-core')
+	compileOnly('org.projectlombok:lombok')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
 	testCompile('io.projectreactor:reactor-test')
+	testCompile('org.springframework.security:spring-security-test')
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }

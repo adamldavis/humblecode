@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>${applicationName}: Learn how to code</title>
-    <link href="/css/base.css" type="text/css" rel="stylesheet" />
-    <link href="/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-    <link href="/css/prettify.css" type="text/css" rel="stylesheet" />
-    <link href="/css/asciidoctor.css" type="text/css" rel="stylesheet" />
+    <link href="/css/base.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/prettify.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/asciidoctor.css" type="text/css" rel="stylesheet"/>
 
     <script src="/js/jquery-1.11.1.min.js" type="application/javascript"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
@@ -14,31 +14,31 @@
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-    <script src="/js/html5shiv.min.js"></script>
+    <script src="js/html5shiv.min.js"></script>
     <![endif]-->
-    <script src="/js/main.js" type="application/javascript"></script>
 
     <style>
-        .categories { font-size: 2em; }
+        .categories {
+            font-size: 2em;
+        }
     </style>
 
 </head>
 <body onload="">
- <div class="container">
+<div class="container">
 
-     <#if name == ""><a href="#" onclick="signUp(); return false">Sign up today!</a></#if>
-
-     <div class="navbar">Hello ${name}!</div>
+    <div class="navbar">Hello ${username}!</div>
 
     <div class="page-header">
         <h1>Welcome to ${applicationName}!</h1>
     </div>
 
-    <article id="categories" class="jumbotron center"></article>
+    <article id="courses" class="jumbotron center"></article>
 
-    <script type="application/javascript">
-        jQuery(document).ready(getCategories);
-    </script>
+    <article id="pitch" class="jumbotron center">
+        <p class="col-lg-3">Upgrade now to get access to all courses.</p>
+        <p class="col-lg-3">Includes: Courses, Tests, Certificates upon completion.</p>
+    </article>
 
     <form action="/pay" method="POST">
         <script
@@ -52,6 +52,6 @@
         </script>
     </form>
 
- </div>
+</div>
 </body>
 </html>

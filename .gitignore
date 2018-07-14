@@ -2,7 +2,7 @@
 *.class
 
 # Secret properties
-application.properties
+application.*
 
 # IDEA files
 .idea
@@ -11,6 +11,11 @@ application.properties
 *.ipr
 out/
 build/
+#Gradle
+.gradle
+
+#mongo
+data/
 
 # Log file
 *.log

@@ -31,7 +31,7 @@ public class HumblecodeApplicationTests {
 		ResponseEntity<String> entity = this.testRestTemplate.getForEntity("/",
 				String.class);
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(entity.getBody()).contains("Hello, Andy");
+		assertThat(entity.getBody()).contains("Hello World");
 	}
 
 	@Test
@@ -44,8 +44,31 @@ public class HumblecodeApplicationTests {
 				.exchange("/does-not-exist", HttpMethod.GET, requestEntity, String.class);
 
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-		assertThat(responseEntity.getBody())
-				.contains("Something went wrong: 404 Not Found");
+		assertThat(responseEntity.getBody()).contains("404 Not Found");
+	}
+
+	@Test
+	public void testCSSCanBeGotten() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.TEXT_HTML));
+		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+		ResponseEntity<String> responseEntity = this.testRestTemplate
+				.exchange("/css/base.css", HttpMethod.GET, requestEntity, String.class);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+	}
+
+	@Test
+	public void testLoginPageCanBeGotten() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.TEXT_HTML));
+		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+		ResponseEntity<String> responseEntity = this.testRestTemplate
+				.exchange("/user/account", HttpMethod.GET, requestEntity, String.class);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 }

@@ -8,10 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class HumblecodeApplication {
 
-	public static void main(String[] args) {
-		System.setProperty("spring.devtools.restart.enabled", "true");
-		SpringApplication.run(HumblecodeApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(HumblecodeApplication.class, args);
+    }
 
 }
