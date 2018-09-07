@@ -2,14 +2,12 @@ package com.humblecode.humblecode.rest;
 
 import com.humblecode.humblecode.data.CategoryRepository;
 import com.humblecode.humblecode.model.Category;
-import com.humblecode.humblecode.model.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.UUID;
 
@@ -42,20 +40,20 @@ public class CategoryControl {
         return categoryRepository.findAll();
     }
 
-    @GetMapping("/api/category/{id}")
+    @GetMapping(value = "/api/category/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<Category> getCategory(@RequestParam("id") String id) {
         return categoryRepository.findById(UUID.fromString(id));
     }
     
     @PutMapping(value = "/api/category/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<Category> updateCategory(@RequestParam("id") String id, @RequestBody Map body) {
+    public Mono<Category> updateCategory(@RequestParam("id") String id, @RequestBody Category updatedCategory) {
 
         Mono<Category> categoryMono = categoryRepository.findById(UUID.fromString(id));
 
         return categoryMono.flatMap(category -> {
-            if (body.containsKey("name")) category.name = (String) body.get("name");
-            if (body.containsKey("description")) category.description = (String) body.get("description");
-            //
+            category.name = updatedCategory.name;
+            category.description = updatedCategory.description;
+            category.setCourseLinks(updatedCategory.courseLinks);
             return categoryRepository.save(category);
         });
     }
