@@ -19,7 +19,7 @@
     <script src="/js/main.js" type="application/javascript"></script>
 
     <style>
-        .categories { font-size: 2em; }
+        .categories,.courses { font-size: 2em; }
     </style>
 
 </head>
@@ -34,23 +34,12 @@
         <h1>Welcome to ${applicationName}!</h1>
     </div>
 
-    <article id="categories" class="jumbotron center"></article>
+    <article id="content" class="jumbotron center"></article>
 
     <script type="application/javascript">
-        jQuery(document).ready(getCategories);
+        jQuery(document).ready(HC.loadCourses);
     </script>
 
-    <form action="/pay" method="POST">
-        <script
-                src="https://checkout.stripe.com/checkout.js"
-                class="stripe-button"
-                data-key="pk_test_6pRNASCoBOKtIshFeQd4XMUh"
-                data-image="/images/Zamia.gif"
-                data-name="Humble Code"
-                data-description="2 widgets ($20.00)"
-                data-amount="2000">
-        </script>
-    </form>
 
  </div>
 </body>
