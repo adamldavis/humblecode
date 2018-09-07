@@ -8,8 +8,8 @@ import java.util.UUID;
 
 public interface CourseRepository extends ReactiveMongoRepository<Course, UUID> {
 
-    Flux<Course> findByCategoryId(UUID categoryId);
+    Flux<Course> findAllByCategoryId(UUID categoryId);
 
-    Flux<Course> findByName(String name);
+    Flux<Course> findAllByName(String name);
 
 }

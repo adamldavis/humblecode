@@ -3,13 +3,12 @@ package com.humblecode.humblecode.rest;
 import com.humblecode.humblecode.data.CourseRepository;
 import com.humblecode.humblecode.model.Course;
 import com.humblecode.humblecode.model.Segment;
-import com.humblecode.humblecode.model.Test;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -21,6 +20,11 @@ public class CourseControl {
         this.courseRepository = courseRepository;
     }
 
+    @GetMapping("/api/courses")
+    public Flux<Course> getCourses() {
+        return courseRepository.findAll();
+    }
+
     @GetMapping("/api/course/{id}")
     public Mono<Course> getCourse(@RequestParam("id") String id) {
         return courseRepository.findById(UUID.fromString(id));
@@ -30,7 +34,7 @@ public class CourseControl {
     public Mono saveCourse(@RequestBody Map body) {
         Course course = new Course((String) body.get("name"));
 
-        course.price = new Integer(body.get("price").toString());
+        course.price = Long.parseLong(body.get("price").toString());
         course.categoryId = UUID.fromString(body.get("categoryId").toString());
 
         return courseRepository.insert(course);
