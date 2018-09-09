@@ -47,8 +47,8 @@ public class WebControl {
     }
 
     @GetMapping("/")
-    public String home(Model model, @RequestParam(value="name", required=false, defaultValue="") String name) {
-        model.addAttribute("name", name);
+    public String home(Model model, Principal principal) {
+        model.addAttribute("name", principal == null ? "" : principal.getName());
         model.addAttribute("applicationName", appName);
         return "home";
     }
