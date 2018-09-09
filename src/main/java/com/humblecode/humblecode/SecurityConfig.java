@@ -15,7 +15,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
                 .authorizeExchange()
-                .pathMatchers("/api/**", "/css/**", "js/**", "images/**", "/").permitAll()
+                .pathMatchers("/api/**", "/css/**", "/js/**", "/images/**", "/").permitAll()
                 .pathMatchers("/user/**").hasAuthority("user")
                 .and()
                 .formLogin();
