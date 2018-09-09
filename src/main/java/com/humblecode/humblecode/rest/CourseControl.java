@@ -26,7 +26,7 @@ public class CourseControl {
     }
 
     @GetMapping("/api/course/{id}")
-    public Mono<Course> getCourse(@RequestParam("id") String id) {
+    public Mono<Course> getCourse(@PathVariable("id") String id) {
         return courseRepository.findById(UUID.fromString(id));
     }
 
@@ -35,13 +35,12 @@ public class CourseControl {
         Course course = new Course((String) body.get("name"));
 
         course.price = Long.parseLong(body.get("price").toString());
-        course.categoryId = UUID.fromString(body.get("categoryId").toString());
 
         return courseRepository.insert(course);
     }
 
     @PutMapping(value = "/api/course/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<Course> updateCourse(@RequestParam("id") String id, @RequestBody Map body) {
+    public Mono<Course> updateCourse(@PathVariable("id") String id, @RequestBody Map body) {
 
         Mono<Course> courseMono = courseRepository.findById(UUID.fromString(id));
 
@@ -53,7 +52,7 @@ public class CourseControl {
     }
 
     @PostMapping(value = "/api/course/{id}/segment", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono saveSegment(@RequestParam("id") String id, Segment segment) {
+    public Mono saveSegment(@PathVariable("id") String id, Segment segment) {
         Mono<Course> courseMono = courseRepository.findById(UUID.fromString(id));
 
         return courseMono.flatMap(course -> {

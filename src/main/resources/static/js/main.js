@@ -2,20 +2,6 @@
 var errorHandler = (err) => { alert("Sorry, there was a problem. " + err); console.log(err) }
 
 var HC = {
-    getCategories: function() {
-        jQuery.ajax({method: 'get', url: '/api/categories'}).done(
-            function(data) {
-                console.log("data=" + data);
-                var list = data;
-                var ul = jQuery('<ul class="categories btn-group"></ul>');
-                list.forEach((cat) => {
-                    ul.append('<li class="btn-link" onclick="HC.loadCategory(\'' + cat.id + '\'); return false">'
-                    + cat.name + ': <i>' + cat.description + '</i></li>')
-                });
-                jQuery('#content').html(ul);
-            }
-        ).fail( errorHandler );
-    },
     loadCourses: function() {
         jQuery.ajax({method: 'get', url: '/api/courses'}).done(
             function(data) {
@@ -23,21 +9,7 @@ var HC = {
                 var ul = jQuery('<ul class="courses btn-group"></ul>');
                 list.forEach((crs) => {
                     ul.append('<li class="btn-link" onclick="HC.loadCourse(\''+crs.id+'\'); return false">'
-                        + crs.name + ': <i>' + crs.description + '</i></li>')
-                });
-                jQuery('#content').html(ul);
-            }
-        ).fail( errorHandler );
-    },
-    loadCategory: function(id) {
-        jQuery.ajax({method: 'get', url: '/api/category/'+id}).done(
-            function(data) {
-                console.log("data=" + data);
-                var list = data.courses;
-                var ul = jQuery('<ul class="courses btn-group"></ul>');
-                list.forEach((course) => {
-                    ul.append('<li class="btn-link" onclick="HC.loadCourse(' + course.id + ')">'
-                        + course.name + ': <i>' + HC.toDollars(course.price) + '</i></li>')
+                        + crs.name + ': <i>' + HC.toDollars(crs.price) + '</i></li>')
                 });
                 jQuery('#content').html(ul);
             }

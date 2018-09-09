@@ -16,7 +16,6 @@ public class Course {
 
     @Id UUID id = UUID.randomUUID();
 
-    public UUID categoryId;
     public String name;
     public long price = 2000; // $20.00 is default price
 

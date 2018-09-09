@@ -1,7 +1,7 @@
 package com.humblecode.humblecode.web;
 
-import com.humblecode.humblecode.data.CategoryRepository;
-import com.humblecode.humblecode.model.Category;
+import com.humblecode.humblecode.data.CourseRepository;
+import com.humblecode.humblecode.model.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -20,19 +20,20 @@ public class WebControl {
     String appName;
 
     @Autowired
-    CategoryRepository categoryRepository;
+    CourseRepository courseRepository;
 
     @PostConstruct
     public void setup() {
-        categoryRepository.count().blockOptional().filter(count -> count == 0).ifPresent(it ->
+        courseRepository.count().blockOptional().filter(count -> count == 0).ifPresent(it ->
             Flux.just(
-                new Category("Beginning Java", "The most commonly used programming language in the world."),
-                new Category("Advanced Java", "More advanced Java topics."),
-                new Category("Groovy", "Super awesome optionally dynamic language on the JVM."))
+                    new Course("Beginning Java"),
+                    new Course("Advanced Java"),
+                    new Course("Reactive Streams in Java"))
                 .doOnNext(c -> System.out.println(c.toString()))
-                .flatMap(categoryRepository::save)
-                .blockLast() // need to actually execute save*/
+                .flatMap(courseRepository::save)
+                .subscribe() // need to actually execute save*/
         );
+
     }
 
     @GetMapping("/")
