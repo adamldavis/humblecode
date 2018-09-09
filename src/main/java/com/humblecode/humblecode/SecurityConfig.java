@@ -1,12 +1,18 @@
 package com.humblecode.humblecode;
 
+import com.humblecode.humblecode.data.UserRepository;
 import com.humblecode.humblecode.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @EnableWebFluxSecurity
 public class SecurityConfig {
@@ -23,11 +29,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public MapReactiveUserDetailsService userDetailsService() {
-        User user = new User();
-        user.username = "user";
-        user.credentials = "password";
-        return new MapReactiveUserDetailsService(user);
+    public MapReactiveUserDetailsService userDetailsService(@Autowired UserRepository userRepository) {
+        List<UserDetails> userDetails = new ArrayList<>();
+        userDetails.addAll(userRepository.findAll().collectList().block());
+        return new MapReactiveUserDetailsService(userDetails);
     }
 
     @Bean

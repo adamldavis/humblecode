@@ -32,6 +32,12 @@ public class User implements UserDetails {
 
     public List<TestResult> testResults = new LinkedList<>();
 
+    public User() {}
+    public User(String username, String credentials) {
+        this.username = username;
+        this.credentials = credentials;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority("user"));

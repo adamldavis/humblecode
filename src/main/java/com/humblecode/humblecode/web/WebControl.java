@@ -1,7 +1,9 @@
 package com.humblecode.humblecode.web;
 
 import com.humblecode.humblecode.data.CourseRepository;
+import com.humblecode.humblecode.data.UserRepository;
 import com.humblecode.humblecode.model.Course;
+import com.humblecode.humblecode.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 import javax.annotation.PostConstruct;
 import java.security.Principal;
@@ -21,6 +24,8 @@ public class WebControl {
 
     @Autowired
     CourseRepository courseRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @PostConstruct
     public void setup() {
@@ -30,10 +35,15 @@ public class WebControl {
                     new Course("Advanced Java"),
                     new Course("Reactive Streams in Java"))
                 .doOnNext(c -> System.out.println(c.toString()))
-                .flatMap(courseRepository::save)
+                .flatMap(courseRepository::save).subscribeOn(Schedulers.single())
                 .subscribe() // need to actually execute save*/
         );
-
+        // just adding dummy user for demo purposes:
+        userRepository.count().blockOptional().filter(count -> count == 0).ifPresent(it ->
+                Flux.just(new User("user", "password"))
+                    .flatMap(userRepository::save).subscribeOn(Schedulers.single())
+                    .subscribe()
+        );
     }
 
     @GetMapping("/")
