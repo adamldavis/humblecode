@@ -21,27 +21,27 @@ public class PaymentControl {
     String secret;
 
     @PostMapping(value = "/pay", consumes = "application/x-www-form-urlencoded;charset=UTF-8")
-    public Mono<String> postCharge(@RequestBody Map params) {
+    public Mono<String> postCharge(@RequestBody final Map params) {
         // Set your secret key: remember to change this to your live secret key in production
         // See your keys here: https://dashboard.stripe.com/account/apikeys
         Stripe.apiKey = secret;
 
-        /*Map<String, Object> params = new HashMap<>();
-        params.put("amount", 999);
-        params.put("currency", "usd");
-        params.put("source", "tok_visa");
-        params.put("receipt_email", "jenny.rosen@example.com");*/
+        // These parameters come from the request body and we should probably validate them.
+//        params.put("amount", 999);
+//        params.put("currency", "usd");
+//        params.put("source", "tok_visa");
+//        params.put("receipt_email", "jenny.rosen@example.com");
         return Mono.<String> create(callback -> {
             try {
                 Charge charge = Charge.create(params);
 
                 logger.info("Charge:" + charge.getDescription() + " at " +
-                        System.currentTimeMillis() + " of amount: " + charge.getAmount() +
-                        " was " + charge.getStatus());
+                        System.currentTimeMillis() + " of amount: $" + charge.getAmount() / 100 + "."
+                                + (charge.getAmount() % 100) + " was " + charge.getStatus());
 
                 callback.success(charge.getStatus());
-            } catch (Throwable e) {
-                callback.error(e);
+            } catch (Throwable ex) {
+                callback.error(ex);
             }
         }).doOnError(e -> logger.error(e.getMessage(), e));
     }
