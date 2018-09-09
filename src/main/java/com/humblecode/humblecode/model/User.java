@@ -3,32 +3,67 @@ package com.humblecode.humblecode.model;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @Document
-public class User {
+public class User implements UserDetails {
 
     static final String DEFAULT = "default";
     static final String MONTHLY = "monthly";
     static final String YEARLY = "yearly";
     
     @Id
-    UUID id = UUID.randomUUID();
+    public UUID id = UUID.randomUUID();
 
-    String username;
+    public String username;
 
-    String credentials;
+    public String credentials;
 
-    String accountType = DEFAULT; //default/monthly/etc.
+    public String accountType = DEFAULT; //default/monthly/etc.
 
-    String loginType; // github/facebook/etc.
+    public String loginType; // github/facebook/etc.
 
-    List<UUID> courseIdsPaidFor = new LinkedList<>();
+    public List<UUID> courseIdsPaidFor = new LinkedList<>();
 
-    List<TestResult> testResults = new LinkedList<>();
-    
+    public List<TestResult> testResults = new LinkedList<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(new SimpleGrantedAuthority("user"));
+    }
+
+    @Override
+    public String getPassword() {
+        return credentials;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

@@ -1,32 +1,48 @@
 package com.humblecode.humblecode;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import com.humblecode.humblecode.model.User;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableWebFluxSecurity
+public class SecurityConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
-                .authorizeRequests()
-                .antMatchers("/css/**", "js/**", "images/**", "/", "/api").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
+                .authorizeExchange()
+                .pathMatchers("/api/**", "/css/**", "js/**", "images/**", "/").permitAll()
+                .pathMatchers("/user/**").hasAuthority("user")
                 .and()
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and()
-                //.oauth2Login()
-                .formLogin()
-                .failureUrl("/login-error");
+                .formLogin();
+        return http.build();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
+    @Bean
+    public MapReactiveUserDetailsService userDetailsService() {
+        User user = new User();
+        user.username = "user";
+        user.credentials = "password";
+        return new MapReactiveUserDetailsService(user);
     }
+
+    @Bean
+    public PasswordEncoder myPasswordEncoder() {
+        // never do this in production of course
+        return new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence charSequence) {
+                return charSequence.toString();
+            }
+            @Override
+            public boolean matches(CharSequence charSequence, String s) {
+                return charSequence.equals(s);
+            }
+        };
+    }
+
 }
