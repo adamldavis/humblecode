@@ -1,12 +1,12 @@
 package com.humblecode.humblecode;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurationSupport;
 import org.springframework.web.server.WebExceptionHandler;
 import reactor.core.publisher.Mono;
 
-@Configuration
+@EnableWebFlux
 public class WebFluxConfig extends WebFluxConfigurationSupport {
 
     @Override
