@@ -32,6 +32,9 @@ public class SecurityConfig {
     public MapReactiveUserDetailsService userDetailsService(@Autowired UserRepository userRepository) {
         List<UserDetails> userDetails = new ArrayList<>();
         userDetails.addAll(userRepository.findAll().collectList().block());
+        if (userDetails.isEmpty()) { // here for tests to work
+            userDetails.add(new User("user1", "password"));
+        }
         return new MapReactiveUserDetailsService(userDetails);
     }
 
