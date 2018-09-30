@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import javax.annotation.PostConstruct;
@@ -47,10 +50,10 @@ public class WebControl {
     }
 
     @GetMapping("/")
-    public String home(Model model, Principal principal) {
+    public Mono<String> home(Model model, Principal principal) {
         model.addAttribute("name", principal == null ? "" : principal.getName());
         model.addAttribute("applicationName", appName);
-        return "home";
+        return Mono.just("home");
     }
 
     @GetMapping("/login-error")

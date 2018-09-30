@@ -40,6 +40,11 @@
         jQuery(document).ready(HC.loadCourses);
     </script>
 
+     <form method="post" action="/api/course">
+         Name: <input id="name" name="name" type="text">
+         Price: <input id="price" name="price" type="number">
+         <button onclick="postCourse()">Save Course</button>
+     </form>
 
  </div>
 </body>

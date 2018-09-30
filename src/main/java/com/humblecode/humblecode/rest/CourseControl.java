@@ -31,7 +31,7 @@ public class CourseControl {
     }
 
     @PostMapping(value = "/api/course", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono saveCourse(@RequestBody Map body) {
+    public Mono<Course> saveCourse(@RequestBody Map body) {
         Course course = new Course((String) body.get("name"));
 
         course.price = Long.parseLong(body.get("price").toString());
@@ -40,7 +40,7 @@ public class CourseControl {
     }
 
     @PutMapping(value = "/api/course/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<Course> updateCourse(@PathVariable("id") String id, @RequestBody Map body) {
+    public Mono<Course> updateCourse(@PathVariable("id") String id, @RequestBody Map<String,Object> body) {
 
         Mono<Course> courseMono = courseRepository.findById(UUID.fromString(id));
 

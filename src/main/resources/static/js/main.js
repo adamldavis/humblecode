@@ -51,6 +51,24 @@ var HC = {
             jQuery('h1').text(HC.currentSegment.name);
             jQuery('#content').text(HC.currentSegment.body);
         }
+    },
+    postCourse: function() {
+        var name = jQuery('#name').val();
+        var price = jQuery('#price').val();
+        jQuery.ajax({method: 'post', url: '/api/course/', data: {name: name, price: price}}).done(
+            function(course) {
+                console.log("data=" + course);
+                HC.course = course;
+                var segments = course.segments;
+                var ul = jQuery('<ul class="segments btn-group"></ul>');
+                segments.forEach((segment) => {
+                    ul.append('<li class="btn-link" onclick="HC.loadSegment(' + segment.id + ')">'
+                        + segment.name + '</li>')
+                });
+                jQuery('h1').text(course.name);
+                jQuery('#content').html(ul);
+            }
+        ).fail( errorHandler );
     }
 }
 
