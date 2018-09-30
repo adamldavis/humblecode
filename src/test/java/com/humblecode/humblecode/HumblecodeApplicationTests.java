@@ -65,4 +65,17 @@ public class HumblecodeApplicationTests {
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
+	@Test
+	public void testGetCourses() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+		ResponseEntity<String> response = this.testRestTemplate
+				.exchange("/api/courses", HttpMethod.GET, requestEntity, String.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody()).contains("\"name\":\"Beginning Java\",\"price\":2000");
+	}
+
 }
